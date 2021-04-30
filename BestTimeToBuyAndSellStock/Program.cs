@@ -19,6 +19,11 @@ namespace BestTimeToBuyAndSellStock
             // [7, 1, 5, 3, 6, 4]
             // [7, 6, 4, 3, 1]
             // [2, 4, 1]
+            // [3, 4, 2, 1]
+            // [7, 5, 1, 3, 6, 4]
+            // the max profit will be obtained by getting the min number
+            // that has the max diff ahead.
+
             // 1. Double pointer, at begining and end of array.
             // 2. Compute profit.
             // 3. if current profit is negative move right pointer one position to right.
