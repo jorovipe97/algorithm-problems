@@ -16,52 +16,41 @@ namespace BestTimeToBuyAndSellStock
     {
         public int MaxProfit(int[] prices)
         {
-            // [7,1,5,3,6,4]
-            // 1. from left to right which is the lowest number.
-            // 2. save position of lowest number.
-            // 3. from right to left which is the biggest number.
+            // [7, 1, 5, 3, 6, 4]
+            // [7, 6, 4, 3, 1]
+            // [2, 4, 1]
+            // 1. Double pointer, at begining and end of array.
+            // 2. Compute profit.
+            // 3. if current profit is negative move right pointer one position to right.
+            // 4. if current profit is positive move right pointer one position to right.
 
-            int lowestIndex = -1;
-            int lowestValue = int.MaxValue;
-            // Find from left to right which is the lowest number.
-            for (int i = 0; i < prices.Length; i++)
+            int maxProfit = -1;
+            int l = 0;
+            int r = prices.Length - 1;
+            // Fix first element (buy stock).
+            for (int i = 0; i < prices.Length - 1; i++)
             {
-                int todayPrice = prices[i];
+                int buyPrice = prices[i];
 
-                if (todayPrice < lowestValue)
+                for (int j = i + 1; j < prices.Length; j++)
                 {
-                    lowestIndex = i;
-                    lowestValue = todayPrice;
+                    int sellPrice = prices[j];
+
+                    int profit = sellPrice - buyPrice;
+                    // compare with remaining elements if there is a number greater
+                    if (sellPrice > buyPrice && profit > 0 && profit > maxProfit)
+                    {
+                        maxProfit = profit;
+                    }
                 }
             }
 
-            // If the lowest is en the tail of the array.
-            // then we dont have a possible solution.
-            if (lowestIndex == prices.Length - 1)
+            if (maxProfit == -1)
             {
                 return 0;
             }
 
-            int biggestIndex = -1;
-            int biggestValue = -1;
-            // find from right to left which is the biggest number.
-            for (int i = prices.Length - 1; i > lowestIndex; i--)
-            {
-                int todayPrice = prices[i];
-
-                if (todayPrice > lowestValue && todayPrice > biggestValue)
-                {
-                    biggestIndex = i;
-                    biggestValue = todayPrice;
-                }
-            }
-
-            if (biggestValue == -1)
-            {
-                return 0;
-            }
-
-            return biggestValue - lowestValue;
+            return maxProfit;
         }
     }
 
@@ -74,13 +63,15 @@ namespace BestTimeToBuyAndSellStock
         static void Main(string[] args)
         {
             // expected 5
-            //int[] prices = new int[] { 7, 1, 5, 3, 6, 4 };
+            int[] prices = new int[] { 7, 1, 5, 3, 6, 4 };
 
             // expected 0
             //int[] prices = new int[] { 7, 6, 4, 3, 1 };
 
             // expected 2
-            int[] prices = new int[] { 2, 4, 1 };
+            //int[] prices = new int[] { 2, 4, 1 };
+
+            // int[45156] Time Limit Exceeded: 5000ms.
 
 
             var stock = new Solution();
